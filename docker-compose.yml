@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: livraria-api
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - PG_URL=postgresql://postgres:postgres@db:5432/livraria
+      - MONGO_URL=mongodb://mongo:27017/livraria
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: livraria
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+
+  mongo:
+    image: mongo:4.4
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    entrypoint: ["sh", "-c", "mongod --bind_ip_all --fork --logpath /var/log/mongodb.log && mongo --eval 'load(\"/docker-entrypoint-initdb.d/init-mongo.js\")' && tail -f /dev/null"]
+
+volumes:
+  postgres-data:
+  mongo-data:
