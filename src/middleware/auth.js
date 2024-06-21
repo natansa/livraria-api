@@ -1,33 +1,39 @@
-// src/middleware/auth.js
-const bcrypt = require('bcryptjs');
 const Cliente = require('../models/Cliente');
+const bcrypt = require('bcryptjs');
 
-const basicAuth = async (req, res, next) => {
+const adminUser = 'admin';
+const adminPassword = 'desafio-igti-nodejs';
+
+module.exports = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ message: 'Authorization header missing' });
+    return res.status(401).json({ error: 'No credentials sent!' });
   }
 
-  const [type, credentials] = authHeader.split(' ');
-  if (type !== 'Basic') {
-    return res.status(401).json({ message: 'Invalid authorization type' });
-  }
+  const base64Credentials = authHeader.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+  const [email, password] = credentials.split(':');
 
-  const [email, senha] = Buffer.from(credentials, 'base64').toString().split(':');
-  
-  if (email === 'admin' && senha === 'desafio-igti-nodejs') {
-    req.user = { isAdmin: true };
+  if (email === adminUser && password === adminPassword) {
+    req.user = { email: adminUser, role: 'admin' };
     return next();
   }
 
-  const cliente = await Cliente.findOne({ where: { email } });
-  if (!cliente || !bcrypt.compareSync(senha, cliente.senha)) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+  try {
+    const cliente = await Cliente.findOne({ where: { email } });
+    if (!cliente) {
+      return res.status(401).json({ error: 'Invalid credentials!' });
+    }
+
+    //const isPasswordValid = await bcrypt.compare(password, cliente.senha);
+    if (password != cliente.senha) {
+      return res.status(401).json({ error: 'Invalid credentials!' });
+    }
+
+    req.user = { id: cliente.cliente_id, email: cliente.email, role: 'user' };
+    next();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  req.user = { id: cliente.cliente_id, email: cliente.email, isAdmin: false };
-  next();
 };
-
-module.exports = basicAuth;

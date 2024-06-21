@@ -35,7 +35,7 @@ const auth = require('../middleware/auth');
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', auth, autorController.createAutor);
+router.post('/', auth, authorize(['admin']), autorController.createAutor);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ router.post('/', auth, autorController.createAutor);
  *       404:
  *         description: Autor não encontrado
  */
-router.put('/', auth, autorController.updateAutor);
+router.put('/', auth, authorize(['admin']), autorController.updateAutor);
 
 /**
  * @swagger
@@ -91,7 +91,7 @@ router.put('/', auth, autorController.updateAutor);
  *       404:
  *         description: Autor não encontrado
  */
-router.delete('/:autorId', auth, autorController.deleteAutor);
+router.delete('/:autorId', auth, authorize(['admin']), autorController.deleteAutor);
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ router.delete('/:autorId', auth, autorController.deleteAutor);
  *               items:
  *                 $ref: '#/components/schemas/Autor'
  */
-router.get('/', autorController.getAutores);
+router.get('/', auth, authorize(['admin', 'user']), autorController.getAutores);
 
 /**
  * @swagger
@@ -134,6 +134,6 @@ router.get('/', autorController.getAutores);
  *       404:
  *         description: Autor não encontrado
  */
-router.get('/:autorId', autorController.getAutorById);
+router.get('/:autorId', auth, authorize(['admin', 'user']), autorController.getAutorById);
 
 module.exports = router;

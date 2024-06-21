@@ -44,7 +44,7 @@ const auth = require('../middleware/auth');
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', auth, vendaController.createVenda);
+router.post('/', auth, authorize(['admin', 'user']), vendaController.createVenda);
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ router.post('/', auth, vendaController.createVenda);
  *               items:
  *                 $ref: '#/components/schemas/Venda'
  */
-router.get('/', vendaController.getVendas);
+router.get('/', auth, authorize(['admin']), vendaController.getVendas);
 
 /**
  * @swagger
@@ -87,7 +87,7 @@ router.get('/', vendaController.getVendas);
  *       404:
  *         description: Venda não encontrada
  */
-router.get('/:vendaId', vendaController.getVendaById);
+router.get('/:vendaId', auth, authorize(['admin']), vendaController.getVendaById);
 
 /**
  * @swagger
@@ -114,7 +114,7 @@ router.get('/:vendaId', vendaController.getVendaById);
  *       404:
  *         description: Nenhuma venda encontrada para este cliente
  */
-router.get('/cliente/:clienteId', vendaController.getVendasByCliente);
+router.get('/cliente/:clienteId', auth, authorize.onlySelf(), vendaController.getVendasByCliente);
 
 /**
  * @swagger
@@ -141,7 +141,7 @@ router.get('/cliente/:clienteId', vendaController.getVendasByCliente);
  *       404:
  *         description: Nenhuma venda encontrada para este livro
  */
-router.get('/livro/:livroId', vendaController.getVendasByLivro);
+router.get('/livro/:livroId', auth, authorize(['admin']), vendaController.getVendasByLivro);
 
 /**
  * @swagger
@@ -168,6 +168,6 @@ router.get('/livro/:livroId', vendaController.getVendasByLivro);
  *       404:
  *         description: Nenhuma venda encontrada para este autor
  */
-router.get('/autor/:autorId', vendaController.getVendasByAutor);
+router.get('/autor/:autorId', auth, authorize(['admin']), vendaController.getVendasByAutor);
 
 module.exports = router;

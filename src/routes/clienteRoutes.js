@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const clienteController = require('../controllers/clienteController');
+const auth = require('../middleware/auth');
+const authorize = require('../middleware/authorize');
 
 /**
  * @swagger
@@ -44,7 +46,7 @@ const clienteController = require('../controllers/clienteController');
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', clienteController.createCliente);
+router.post('/', auth, authorize(['admin']), clienteController.createCliente);
 
 /**
  * @swagger
@@ -87,7 +89,7 @@ router.post('/', clienteController.createCliente);
  *       404:
  *         description: Cliente não encontrado
  */
-router.put('/', clienteController.updateCliente);
+router.put('/', auth, authorize.onlySelf(), clienteController.updateCliente);
 
 /**
  * @swagger
@@ -108,7 +110,7 @@ router.put('/', clienteController.updateCliente);
  *       404:
  *         description: Cliente não encontrado
  */
-router.delete('/:clienteId', clienteController.deleteCliente);
+router.delete('/:clienteId', auth, authorize(['admin']), clienteController.deleteCliente);
 
 /**
  * @swagger
@@ -126,7 +128,7 @@ router.delete('/:clienteId', clienteController.deleteCliente);
  *               items:
  *                 $ref: '#/components/schemas/Cliente'
  */
-router.get('/', clienteController.getClientes);
+router.get('/', auth, authorize(['admin']), clienteController.getClientes);
 
 /**
  * @swagger
@@ -151,6 +153,6 @@ router.get('/', clienteController.getClientes);
  *       404:
  *         description: Cliente não encontrado
  */
-router.get('/:clienteId', clienteController.getClienteById);
+router.get('/:clienteId', auth, authorize.onlySelf(), clienteController.getClienteById);
 
 module.exports = router;

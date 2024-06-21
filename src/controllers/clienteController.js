@@ -14,6 +14,11 @@ exports.createCliente = async (req, res) => {
 
 exports.updateCliente = async (req, res) => {
   const { id, nome, email, senha, telefone, endereco } = req.body;
+
+  if (req.user.role !== 'admin' && req.user.id !== parseInt(id)) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   try {
     const cliente = await Cliente.findByPk(id);
     if (!cliente) {
@@ -29,6 +34,11 @@ exports.updateCliente = async (req, res) => {
 
 exports.deleteCliente = async (req, res) => {
   const { clienteId } = req.params;
+
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   try {
     const cliente = await Cliente.findByPk(clienteId);
     if (!cliente) {
@@ -42,6 +52,10 @@ exports.deleteCliente = async (req, res) => {
 };
 
 exports.getClientes = async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   try {
     const clientes = await Cliente.findAll({
       attributes: { exclude: ['senha'] }
@@ -54,6 +68,11 @@ exports.getClientes = async (req, res) => {
 
 exports.getClienteById = async (req, res) => {
   const { clienteId } = req.params;
+
+  if (req.user.role !== 'admin' && req.user.id !== parseInt(clienteId)) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   try {
     const cliente = await Cliente.findByPk(clienteId, {
       attributes: { exclude: ['senha'] }

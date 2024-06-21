@@ -40,6 +40,11 @@ exports.getVendaById = async (req, res) => {
 
 exports.getVendasByCliente = async (req, res) => {
   const { clienteId } = req.params;
+
+  if (req.user.role !== 'admin' && req.user.id !== parseInt(clienteId)) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   try {
     const vendas = await Venda.findAll({ where: { cliente_id: clienteId } });
     res.status(200).json(vendas);
