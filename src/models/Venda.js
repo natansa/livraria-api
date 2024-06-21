@@ -1,9 +1,11 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 const Cliente = require('./Cliente');
 const Livro = require('./Livro');
 
-const Venda = sequelize.define('Venda', {
+class Venda extends Model {}
+
+Venda.init({
   venda_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -32,8 +34,13 @@ const Venda = sequelize.define('Venda', {
     },
   },
 }, {
+  sequelize,
+  modelName: 'Venda',
   tableName: 'vendas',
   timestamps: false
 });
+
+Venda.belongsTo(Cliente, { foreignKey: 'cliente_id' });
+Venda.belongsTo(Livro, { foreignKey: 'livro_id' });
 
 module.exports = Venda;

@@ -1,7 +1,9 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Cliente = sequelize.define('Cliente', {
+class Cliente extends Model {}
+
+Cliente.init({
   cliente_id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -29,6 +31,8 @@ const Cliente = sequelize.define('Cliente', {
     allowNull: false,
   },
 }, {
+  sequelize,
+  modelName: 'Cliente',
   tableName: 'clientes',
   timestamps: false
 });
