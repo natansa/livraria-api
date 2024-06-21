@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const livroController = require('../controllers/livroController');
 const auth = require('../middleware/auth');
+const authorize = require('../middleware/authorize');
 
 router.post('/livro', auth, authorize(['admin']), livroController.createLivro);
 router.put('/livro', auth, authorize(['admin']), livroController.updateLivro);
