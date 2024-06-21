@@ -28,6 +28,9 @@ const Cliente = sequelize.define('Cliente', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+}, {
+  tableName: 'clientes',
+  timestamps: false
 });
 
 module.exports = Cliente;

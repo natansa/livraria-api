@@ -39,7 +39,7 @@ exports.getVendaById = async (req, res) => {
 };
 
 exports.getVendasByCliente = async (req, res) => {
-  const { clienteId } = req.query;
+  const { clienteId } = req.params;
   try {
     const vendas = await Venda.findAll({ where: { cliente_id: clienteId } });
     res.status(200).json(vendas);
@@ -49,7 +49,7 @@ exports.getVendasByCliente = async (req, res) => {
 };
 
 exports.getVendasByLivro = async (req, res) => {
-  const { livroId } = req.query;
+  const { livroId } = req.params;
   try {
     const vendas = await Venda.findAll({ where: { livro_id: livroId } });
     res.status(200).json(vendas);
@@ -59,7 +59,7 @@ exports.getVendasByLivro = async (req, res) => {
 };
 
 exports.getVendasByAutor = async (req, res) => {
-  const { autorId } = req.query;
+  const { autorId } = req.params;
   try {
     const vendas = await Venda.findAll({
       include: {

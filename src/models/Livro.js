@@ -27,6 +27,9 @@ const Livro = sequelize.define('Livro', {
       key: 'autor_id',
     },
   },
+}, {
+  tableName: 'livros',
+  timestamps: false
 });
 
 module.exports = Livro;

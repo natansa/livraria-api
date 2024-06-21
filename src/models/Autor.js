@@ -20,6 +20,9 @@ const Autor = sequelize.define('Autor', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+}, {
+  tableName: 'autores',
+  timestamps: false
 });
 
 module.exports = Autor;

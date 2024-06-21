@@ -31,6 +31,9 @@ const Venda = sequelize.define('Venda', {
       key: 'livro_id',
     },
   },
+}, {
+  tableName: 'vendas',
+  timestamps: false
 });
 
 module.exports = Venda;
