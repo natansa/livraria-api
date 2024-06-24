@@ -1,4 +1,3 @@
-// src/scripts/insertData.js
 const sequelize = require('../config/database');
 const Cliente = require('../models/Cliente');
 const Autor = require('../models/Autor');

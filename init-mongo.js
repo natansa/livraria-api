@@ -1,4 +1,3 @@
-// init-mongo.js
 db = db.getSiblingDB('livraria');
 
 db.createCollection('livroInfo');
