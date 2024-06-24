@@ -18,7 +18,7 @@ const authorize = require('../middleware/authorize');
  *     summary: Cria um novo autor
  *     tags: [Autores]
  *     security:
- *       - bearerAuth: []
+ *       - basicAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -45,7 +45,7 @@ router.post('/', auth, authorize(['admin']), autorController.createAutor);
  *     summary: Atualiza um autor existente
  *     tags: [Autores]
  *     security:
- *       - bearerAuth: []
+ *       - basicAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -78,7 +78,7 @@ router.put('/', auth, authorize(['admin']), autorController.updateAutor);
  *     summary: Deleta um autor pelo ID
  *     tags: [Autores]
  *     security:
- *       - bearerAuth: []
+ *       - basicAuth: []
  *     parameters:
  *       - in: path
  *         name: autorId

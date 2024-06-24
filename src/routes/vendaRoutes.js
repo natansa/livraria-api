@@ -18,7 +18,7 @@ const authorize = require('../middleware/authorize');
  *     summary: Cria uma nova venda
  *     tags: [Vendas]
  *     security:
- *       - bearerAuth: []
+ *       - basicAuth: []
  *     requestBody:
  *       required: true
  *       content:

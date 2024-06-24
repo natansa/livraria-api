@@ -128,13 +128,17 @@ const options = {
         },
       },
       securitySchemes: {
-        bearerAuth: {
+        basicAuth: {
           type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
+          scheme: 'basic',
         },
       },
     },
+    security: [
+      {
+        basicAuth: [],
+      },
+    ],
   },
   apis: ['./src/routes/*.js'],
 };
