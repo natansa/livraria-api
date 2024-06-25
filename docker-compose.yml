@@ -23,7 +23,7 @@ services:
       - /app/node_modules
 
   db:
-    image: postgres:13
+    image: postgres:latest
     container_name: postgres
     environment:
       POSTGRES_USER: postgres
@@ -40,14 +40,12 @@ services:
       retries: 5
 
   mongo:
-    image: mongo:4.4
+    image: mongo:latest
     container_name: mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
-    entrypoint: ["sh", "-c", "mongod --bind_ip_all --fork --logpath /var/log/mongodb.log && mongo --eval 'load(\"/docker-entrypoint-initdb.d/init-mongo.js\")' && tail -f /dev/null"]
 
 volumes:
   postgres-data:

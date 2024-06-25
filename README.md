@@ -107,7 +107,7 @@ A documentação da API está disponível no endpoint `/swagger` e pode ser aces
 
 6. Pare a aplicação utilizando Docker Compose:
    ```bash
-   docker-compose down
+   docker-compose down -v
 
 7. A aplicação usa o MongoDB e o Postgres no Docker.
 

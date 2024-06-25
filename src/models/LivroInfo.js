@@ -12,6 +12,6 @@ const LivroInfoSchema = new mongoose.Schema({
   }],
 });
 
-const LivroInfo = mongoose.model('LivroInfo', LivroInfoSchema);
+const LivroInfo = mongoose.model('livroinfos', LivroInfoSchema);
 
 module.exports = LivroInfo;
