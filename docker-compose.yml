@@ -7,7 +7,11 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - PG_URL=postgresql://postgres:postgres@db:5432/livraria
+      - DB_NAME=livraria
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
       - MONGO_URL=mongodb://mongo:27017/livraria
     ports:
       - "3000:3000"
